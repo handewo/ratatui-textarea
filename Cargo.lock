@@ -114,6 +114,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c8efb64bd706a16a1bdde310ae86b351e4d21550d98d056f22f8a7f7a2183fec"
 
 [[package]]
+name = "bytes"
+version = "1.12.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "776dfebd015e2d8732c684a2c71003674ccb49457b539b9e82151ba38e96dd7c"
+
+[[package]]
 name = "cast"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -300,6 +306,24 @@ dependencies = [
  "rustix",
  "signal-hook",
  "signal-hook-mio",
+ "winapi",
+]
+
+[[package]]
+name = "crossterm"
+version = "0.29.0"
+source = "git+https://github.com/handewo/crossterm.git#4d94cedf51a9c46d4fb9d059d0c326c6ff2fa65a"
+dependencies = [
+ "bitflags 2.13.0",
+ "bytes",
+ "crossterm_winapi",
+ "derive_more",
+ "mio",
+ "parking_lot",
+ "rustix",
+ "signal-hook",
+ "signal-hook-mio",
+ "tokio",
  "winapi",
 ]
 
@@ -986,6 +1010,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "pin-project-lite"
+version = "0.2.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a89322df9ebe1c1578d689c92318e070967d1042b512afbe49518723f4e6d5cd"
+
+[[package]]
 name = "plotters"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1095,8 +1125,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1695748e3a735b34968c887ceea5a380b43545903868ae8f5b666593100f6b68"
 dependencies = [
  "instability",
- "ratatui-core",
- "ratatui-widgets",
+ "ratatui-core 0.1.1",
+ "ratatui-widgets 0.3.1",
 ]
 
 [[package]]
@@ -1120,35 +1150,62 @@ dependencies = [
 ]
 
 [[package]]
+name = "ratatui-core"
+version = "0.1.2"
+source = "git+https://github.com/handewo/ratatui.git#04a4a19b83e0c6938aadc14f4d3d540e12770023"
+dependencies = [
+ "bitflags 2.13.0",
+ "compact_str",
+ "hashbrown 0.17.1",
+ "itertools 0.14.0",
+ "kasuari",
+ "lru",
+ "strum",
+ "thiserror 2.0.18",
+ "unicode-segmentation",
+ "unicode-truncate",
+ "unicode-width",
+]
+
+[[package]]
 name = "ratatui-crossterm"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b2867bedcbd6a690ca4f8672a687b730ec07660c79844517b084311b529980c"
+version = "0.1.2"
+source = "git+https://github.com/handewo/ratatui.git#04a4a19b83e0c6938aadc14f4d3d540e12770023"
 dependencies = [
  "cfg-if",
- "crossterm",
+ "crossterm 0.29.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "instability",
- "ratatui-core",
+ "ratatui-core 0.1.2",
+]
+
+[[package]]
+name = "ratatui-notty"
+version = "0.1.0-beta.0"
+source = "git+https://github.com/handewo/ratatui.git#04a4a19b83e0c6938aadc14f4d3d540e12770023"
+dependencies = [
+ "cfg-if",
+ "crossterm 0.29.0 (git+https://github.com/handewo/crossterm.git)",
+ "instability",
+ "ratatui-core 0.1.2",
+ "ratatui-crossterm",
 ]
 
 [[package]]
 name = "ratatui-termion"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4cade85a8591fbc911e147951422f0d6fd40f4948b271b6216c7dc01838996f8"
+version = "0.1.2"
+source = "git+https://github.com/handewo/ratatui.git#04a4a19b83e0c6938aadc14f4d3d540e12770023"
 dependencies = [
  "instability",
- "ratatui-core",
+ "ratatui-core 0.1.2",
  "termion",
 ]
 
 [[package]]
 name = "ratatui-termwiz"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "386b8ff8f74ed749509391c56d549761a2fcdb408e1f42e467286bcb7dac8967"
+version = "0.1.2"
+source = "git+https://github.com/handewo/ratatui.git#04a4a19b83e0c6938aadc14f4d3d540e12770023"
 dependencies = [
- "ratatui-core",
+ "ratatui-core 0.1.2",
  "termwiz",
 ]
 
@@ -1158,11 +1215,12 @@ version = "0.9.4"
 dependencies = [
  "arbitrary",
  "portable-atomic",
- "ratatui-core",
+ "ratatui-core 0.1.2",
  "ratatui-crossterm",
+ "ratatui-notty",
  "ratatui-termion",
  "ratatui-termwiz",
- "ratatui-widgets",
+ "ratatui-widgets 0.3.2",
  "regex",
  "serde",
  "serde_json",
@@ -1192,7 +1250,24 @@ dependencies = [
  "instability",
  "itertools 0.14.0",
  "line-clipping",
- "ratatui-core",
+ "ratatui-core 0.1.1",
+ "strum",
+ "unicode-segmentation",
+ "unicode-width",
+]
+
+[[package]]
+name = "ratatui-widgets"
+version = "0.3.2"
+source = "git+https://github.com/handewo/ratatui.git#04a4a19b83e0c6938aadc14f4d3d540e12770023"
+dependencies = [
+ "bitflags 2.13.0",
+ "hashbrown 0.17.1",
+ "indoc",
+ "instability",
+ "itertools 0.14.0",
+ "line-clipping",
+ "ratatui-core 0.1.2",
  "strum",
  "time",
  "unicode-segmentation",
@@ -1603,6 +1678,15 @@ checksum = "be4d6b5f19ff7664e8c98d03e2139cb510db9b0a60b55f8e8709b689d939b6bc"
 dependencies = [
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "tokio"
+version = "1.54.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b52fd3255258d26fac7264ab5a76b53c13367136dc011d3d6ad4f8ed070396a3"
+dependencies = [
+ "pin-project-lite",
 ]
 
 [[package]]
